@@ -98,30 +98,30 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 		// Draw the enemy box
 		windowTemp.setColor(new Color(150,0,0));
-        windowTemp.fillRect(boxX,boxY,boxWidth,boxHeight);
-        // Draw box with an outline of black
+	        windowTemp.fillRect(boxX,boxY,boxWidth,boxHeight);
+	        // Draw box with an outline of black
 		windowTemp.setColor(new Color(0,0,0));
-        windowTemp.drawRect(boxX,boxY,boxWidth,boxHeight);
-        // Update collision rectangle
-        boxRect.setRect(boxX,boxY,boxWidth,boxHeight);
+	        windowTemp.drawRect(boxX,boxY,boxWidth,boxHeight);
+	        // Update collision rectangle
+	        boxRect.setRect(boxX,boxY,boxWidth,boxHeight);
 
 
-        // Draw the player
+        	// Draw the player
 		windowTemp.setColor(new Color(0,0,150));
-        windowTemp.fillRect(playerX,playerY,playerWidth,playerHeight);
-        // Draw player with an outline of black
+        	windowTemp.fillRect(playerX,playerY,playerWidth,playerHeight);
+        	// Draw player with an outline of black
 		windowTemp.setColor(new Color(0,0,0));
-        windowTemp.drawRect(playerX,playerY,playerWidth,playerHeight);
-        // Update collision rectangle
-        playerRect.setRect(playerX,playerY,playerWidth,playerHeight);
+        	windowTemp.drawRect(playerX,playerY,playerWidth,playerHeight);
+        	// Update collision rectangle
+        	playerRect.setRect(playerX,playerY,playerWidth,playerHeight);
 
 
-        // Display whether or not there is a collision
-        if(playerCollision()){
+	        // Display whether or not there is a collision
+	        if(playerCollision()){
 			windowTemp.setColor(new Color(0,150,0));
-        	windowTemp.setFont(font1);
-        	windowTemp.drawString("Collision!",30,50);
-        }
+	        	windowTemp.setFont(font1);
+	        	windowTemp.drawString("Collision!",30,50);
+        	}
 
 
 
@@ -140,59 +140,59 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 			}catch(InterruptedException e){
 				Thread.currentThread().interrupt();
 			}
-	        //CODE GOES BELOW HERE
-	        /*	
-	        	key 		code
-	        	 a 		 	65
-	        	 b 		 	66
-	        	 c 		 	67
-	        	 ...	 	...
-	        	 z		 	90
-	          left arrow	37
-	          up arrow		38
-	          right			39
-	          down			40
-	          enter 		13
+		        //CODE GOES BELOW HERE
+		        /*	
+		       	      __key__ 		     __code__
+		        	 a 		 	65
+		        	 b 		 	66
+		        	 c 		 	67
+		        	 ...	 		...
+		        	 z		 	90
+		          	left arrow		37
+		          	up arrow		38
+		          	right			39
+		          	down			40
+		          	enter 			13
 
 			-- Find ALL the key codes at this url:
 			http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 
-	        */
+	        	*/
 
 			//Key code operations
-            if(key[68]){
-            	playerX += playerSpeed;
-            }
-            if(key[65]){
-            	playerX -= playerSpeed;
-            }
-            if(key[83]){
-            	playerY += playerSpeed;
-            }
-            if(key[87]){
-            	playerY -= playerSpeed;
-            }
-
-
-            //Animate the enemy box to bounce back and forth
-            if(moveRight){
-            	boxX += 2;
-            	if(boxX + boxWidth >= getWidth()){
-            		moveRight = false;
-            		moveLeft = true;
-            	}
-            }
-            else if(moveLeft){
-            	boxX -= 2;
-            	if(boxX <= 0){
-            		moveLeft = false;
-            		moveRight = true;
-            	}
-            }
-
-            
-
-	        // Repaint the window
+			if(key[68]){
+			    playerX += playerSpeed;
+			}
+			if(key[65]){
+			    playerX -= playerSpeed;
+			}
+			if(key[83]){
+			    playerY += playerSpeed;
+			}
+			if(key[87]){
+			    playerY -= playerSpeed;
+			}
+	
+	
+			//Animate the enemy box to bounce back and forth
+			if(moveRight){
+			    boxX += 2;
+			    if(boxX + boxWidth >= getWidth()){
+			    	moveRight = false;
+			    	moveLeft = true;
+			    }
+			}
+			else if(moveLeft){
+			    boxX -= 2;
+			    if(boxX <= 0){
+			    	moveLeft = false;
+			    	moveRight = true;
+			    }
+			}
+			
+			
+			
+			 // Repaint the window
 			repaint();
 		}
 	}
@@ -200,20 +200,20 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
     //----------------- OTHER METHODS HERE -------------------- //
 
 	// Collision detection
-    private boolean playerCollision(){
+	private boolean playerCollision(){
+	
+		boolean collision = false;
+		
+		// Check for collision with any objects
+		if(playerRect.getBounds2D().intersects(boxRect.getBounds2D())){
+		    collision = true;
+		}
+		
+		return collision;
+	}
 
-    	boolean collision = false;
 
-    	// Check for collision with any objects
-    	if(playerRect.getBounds2D().intersects(boxRect.getBounds2D())){
-    		collision = true;
-    	}
-
-    	return collision;
-    }
-
-
-    // MOUSELISTENER
+	 // MOUSELISTENER
 	public void mouseClicked(MouseEvent e) {
 
 		// Store the clicked positions into your mouse variables
