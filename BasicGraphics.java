@@ -5,8 +5,6 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
-// © Copyright 2015 Logan Allen //
-
 public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 	//Instantiate variables here
@@ -26,7 +24,7 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 	private boolean moveRight, moveLeft;
 
-	private boolean collision;
+
 
 	// Instantiate collision rectangles for each object
 	private Rectangle2D.Double boxRect, playerRect;
