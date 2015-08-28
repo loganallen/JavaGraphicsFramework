@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
-	//Instantiate variables here
+	// Declare variables here
 	private BufferedImage buffered;
 	private Graphics windowTemp;
 
@@ -19,42 +19,26 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 	private Font font1 = new Font(Font.SERIF,Font.PLAIN,30);
 	
-	private int boxX, boxY, boxWidth, boxHeight;
-	private int playerX, playerY, playerWidth, playerHeight, playerSpeed;
-
+	private Player player;
+	private Enemy enemy1;
 	private boolean moveRight, moveLeft;
 
-
-
-	// Instantiate collision rectangles for each object
-	private Rectangle2D.Double boxRect, playerRect;
 
 	// CONSTRUCTOR
 	public BasicGraphics(int width, int height){
 
 		// Call JPanel constructor with doubleBuffered value
 		super(true);
+		this.setSize(width,height);
 		// Add key and mouse listeners
 		addMouseListener(this);
 		addKeyListener(this);
 
+		// Instantiate variables here
 		this.backgroundColor = new Color(255,255,255);
 
-		this.boxX = 450;
-		this.boxY = 100;
-		this.boxWidth = 75;
-		this.boxHeight = 75;
-		this.boxRect = new Rectangle2D.Double(boxX,boxY,boxWidth,boxHeight);
-
-		this.playerX = 150;
-		this.playerY = 300;
-		this.playerWidth = 40;
-		this.playerHeight = 40;
-		this.playerRect = new Rectangle2D.Double(playerX,playerY,playerWidth,playerHeight);
-		this.playerSpeed = 3;
-
-		this.moveLeft = false;
-		this.moveRight = true;
+		this.player = new Player(150,300,40,40,3.0);
+		this.enemy1 = new Enemy(width,height);
 
 	}
 
@@ -93,33 +77,15 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 		// __________ Draw objects below __________ //
 
+		player.draw(windowTemp,new Color(0,0,150));
+		enemy1.draw(windowTemp,new Color(150,0,0));
 
-		// Draw the enemy box
-		windowTemp.setColor(new Color(150,0,0));
-	        windowTemp.fillRect(boxX,boxY,boxWidth,boxHeight);
-	        // Draw box with an outline of black
-		windowTemp.setColor(new Color(0,0,0));
-	        windowTemp.drawRect(boxX,boxY,boxWidth,boxHeight);
-	        // Update collision rectangle
-	        boxRect.setRect(boxX,boxY,boxWidth,boxHeight);
-
-
-        	// Draw the player
-		windowTemp.setColor(new Color(0,0,150));
-        	windowTemp.fillRect(playerX,playerY,playerWidth,playerHeight);
-        	// Draw player with an outline of black
-		windowTemp.setColor(new Color(0,0,0));
-        	windowTemp.drawRect(playerX,playerY,playerWidth,playerHeight);
-        	// Update collision rectangle
-        	playerRect.setRect(playerX,playerY,playerWidth,playerHeight);
-
-
-	        // Display whether or not there is a collision
-	        if(playerCollision()){
+        // Display whether or not there is a collision
+        if(player.collision(enemy1.getCollisionRect())){
 			windowTemp.setColor(new Color(0,150,0));
-	        	windowTemp.setFont(font1);
-	        	windowTemp.drawString("Collision!",30,50);
-        	}
+        	windowTemp.setFont(font1);
+        	windowTemp.drawString("Collision!",30,50);
+    	}
 
 
 
@@ -159,34 +125,20 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 
 			//Key code operations
 			if(key[68]){
-			    playerX += playerSpeed;
+			    player.moveRight();
 			}
 			if(key[65]){
-			    playerX -= playerSpeed;
+			    player.moveLeft();
 			}
 			if(key[83]){
-			    playerY += playerSpeed;
+			    player.moveDown();
 			}
 			if(key[87]){
-			    playerY -= playerSpeed;
+			    player.moveUp();
 			}
 	
-	
-			//Animate the enemy box to bounce back and forth
-			if(moveRight){
-			    boxX += 2;
-			    if(boxX + boxWidth >= getWidth()){
-			    	moveRight = false;
-			    	moveLeft = true;
-			    }
-			}
-			else if(moveLeft){
-			    boxX -= 2;
-			    if(boxX <= 0){
-			    	moveLeft = false;
-			    	moveRight = true;
-			    }
-			}
+			enemy1.move();
+					
 			
 			
 			
@@ -196,19 +148,6 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 	}
 
     //----------------- OTHER METHODS HERE -------------------- //
-
-	// Collision detection
-	private boolean playerCollision(){
-	
-		boolean collision = false;
-		
-		// Check for collision with any objects
-		if(playerRect.getBounds2D().intersects(boxRect.getBounds2D())){
-		    collision = true;
-		}
-		
-		return collision;
-	}
 
 
 	 // MOUSELISTENER
@@ -245,8 +184,6 @@ public class BasicGraphics extends JPanel implements MouseListener, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// Set the key code element in the array to FALSE
 		key[e.getKeyCode()]=false;
-
 	}
-
 
 }
